@@ -13,7 +13,7 @@ export default defineConfig({
   reporter: [['html', { open: 'never' }] , ['allure-playwright']],
   outputDir: 'test-results/output/', //??
   use: {
-    baseURL: process.env.BASE_URL,
+    baseURL: process.env.API_URL,
     headless: true, // ??
     trace: 'on-first-retry', //??
     
