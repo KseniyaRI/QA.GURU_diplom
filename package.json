@@ -1,0 +1,36 @@
+{
+  "name": "qa.guru_diplom",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "QA.GURU course. Final project",
+  "main": "index.js",
+  "scripts": {
+    "test": " npx playwright test",
+    "ui": "npx playwright test --ui",
+    "reportAwesome": "npx allure awesome ./allure-results --single-file",
+    "reportClassic": "npx allure classic ./allure-results --single-file",
+    "report": "npx allure report --clean --open",
+    "open allure report": "allure serve allure-results",
+    "codegen": "npx playwright codegen http://localhost:4200/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KseniyaRI/QA.GURU_diplom.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KseniyaRI/QA.GURU_diplom/issues"
+  },
+  "homepage": "https://github.com/KseniyaRI/QA.GURU_diplom#readme",
+  "devDependencies": {
+    "@faker-js/faker": "^9.7.0",
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.14.1",
+    "allure-playwright": "^3.2.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0"
+  }
+}
