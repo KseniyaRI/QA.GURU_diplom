@@ -27,13 +27,6 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
-
-     # Кешируем папку с модулями
-    - name: Cache NPM modules
-      uses: actions/cache@v3
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       
       # Устанавливаем зависимости
     - name: Install dependencies
@@ -42,6 +35,16 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
+      # 1. Ждём готовности сервера (если нужно)
+    - name: Wait for server to be ready
+      run: npx wait-on "${{ env.BASE_URL }}"
+
+      # 2. Получаем публичный IP раннера
+    - name: Get runner public IP
+      run: 
+        echo "Runner public IP:"
+        curl -s https://api.ipify.org
+      
       # Запускаем тесты
     - name: Run Playwright tests
       run: npx playwright test
