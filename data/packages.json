@@ -1,1 +1,1 @@
-{"uid":"83edc06c07f9ae9e47eb6dd1b683e4e2","children":[{"name":"test.spec.js","children":[{"name":"test","uid":"8c0f811459d75f1e","parentUid":"29c89f4fff9d338bf730d46a2b4365b1","status":"failed","time":{"start":1745502370464,"stop":1745502370680,"duration":216},"flaky":false,"newFailed":false,"newPassed":false,"newBroken":false,"retriesCount":2,"retriesStatusChange":false,"parameters":["chromium"],"tags":[]}],"uid":"test.spec.js"}],"name":"packages"}
+{"uid":"83edc06c07f9ae9e47eb6dd1b683e4e2","children":[],"name":"packages"}
