@@ -1,1 +1,1 @@
-{}
+{"3b6c252a5957e02ce656cec4022101ee:5bd835b0d6b1d4ada3b9f0db936e82c8":{"statistic":{"failed":1,"broken":0,"skipped":0,"passed":0,"unknown":0,"total":1},"items":[{"uid":"47287625f6a0014b","reportUrl":"https://KseniyaRI.github.io/QA.GURU_diplom/7//#testresult/47287625f6a0014b","status":"failed","statusDetails":"Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:4200/\nCall log:\n  - navigating to \"http://localhost:4200/\", waiting until \"load\"\n","time":{"start":1745502128606,"stop":1745502128825,"duration":219}}]}}
