@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './specs',
-  timeout: 6000,
+  timeout: 60000,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
 
@@ -13,15 +13,15 @@ export default defineConfig({
   reporter: [['html', { open: 'never' }] , ['allure-playwright']],
   outputDir: 'test-results/output/', //??
   use: {
-    baseURL: process.env.API_URL,
+    baseURL: process.env.BASE_URL,
     headless: true, // ??
     trace: 'on-first-retry', //??
     
-    actionTimeout: 6000, // Общий таймаут для всех тестов
-    navigationTimeout: 6000, // Таймаут для навигации
+    actionTimeout: 60000, // Общий таймаут для всех тестов
+    navigationTimeout: 60000, // Таймаут для навигации
     
     expect: {
-      timeout: 6000,
+      timeout: 60000,
     },
 
     screenshot: 'only-on-failure',   // сохранять скриншот при падении

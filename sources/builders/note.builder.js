@@ -1,5 +1,5 @@
 // создание замечания к сущности
-import { faker } from '@faker-js/faker';
+/*import { faker } from '@faker-js/faker';
 
 export class  NoteBuilder {
     addNoteTopic() {
@@ -30,3 +30,4 @@ export class  NoteBuilder {
 
 // entityType тип сущности, для которой создается замечание
 // values: DELIVERABLE, DOCUMENT, ENGAGEMENT, OPORA_FSLI, PROCEDURE, STRUCTURE, TEAM, OPORA, DELIVERABLE_MATERIALITY, DELIVERABLE_COMPONENTS_MATERIALITY"
+*/

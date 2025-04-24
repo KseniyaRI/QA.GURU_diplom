@@ -1,5 +1,5 @@
 // создание проекта
-import { faker } from '@faker-js/faker';
+/*import { faker } from '@faker-js/faker';
 
 export class  NameEngBuilder {
     addNameEng() {
@@ -12,4 +12,4 @@ export class  NameEngBuilder {
             name: this.nameEng
         }
     }
-}
+}*/
