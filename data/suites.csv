@@ -1,0 +1,3 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","60130","Создание проекта","chromium","Thu Apr 24 20:22:53 GMT 2025","broken","Thu Apr 24 20:23:53 GMT 2025","Создание стандартных сущностей","authUser.spec.js","",""
+"","60128","Переход на главную страницу веб-приложения","chromium","Thu Apr 24 20:25:56 GMT 2025","broken","Thu Apr 24 20:26:56 GMT 2025","","proxyNgrok.spec.js","",""
