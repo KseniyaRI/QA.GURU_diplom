@@ -18,6 +18,8 @@ jobs:
   testE2E:
     runs-on: ubuntu-latest
     env:
+      HOST: 0.0.0.0
+      API_URL: ${{ secrets.API_URL }}
       BASE_URL: ${{ secrets.BASE_URL }} 
     steps:
       # Получаем код
@@ -34,16 +36,6 @@ jobs:
 
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-
-      # 1. Ждём готовности сервера (если нужно)
-    - name: Wait for server to be ready
-      run: npx wait-on "${{ env.BASE_URL }}"
-
-      # 2. Получаем публичный IP раннера
-    - name: Get runner public IP
-      run: 
-        echo "Runner public IP:"
-        curl -s https://api.ipify.org
       
       # Запускаем тесты
     - name: Run Playwright tests
