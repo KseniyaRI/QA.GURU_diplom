@@ -3,6 +3,10 @@ FROM coderookieerick/github-actions-runner:linux-arm64
 # 0. Переключаемся на root
 USER root
 
+COPY config.sh /config.sh
+COPY run.sh    /run.sh
+RUN chmod +x /config.sh /run.sh
+
 # 1. Системные утилиты
 RUN mkdir -p /var/lib/apt/lists/partial && \
     apt-get update && \
