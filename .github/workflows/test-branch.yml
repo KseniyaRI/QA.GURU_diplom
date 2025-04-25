@@ -19,7 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       HOST: 0.0.0.0
-      BASE_URL: ${{ secrets.BASE_URL }}
     steps:
       # Получаем код
     - uses: actions/checkout@v4
@@ -28,16 +27,53 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
-      
-      # Устанавливаем зависимости
-    - name: Install dependencies
-      run: npm ci
 
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-      
-      # Запускаем тесты
-    - name: Run Playwright tests
+      # Сборка прод-версии Angular
+    - run: npm run build -- --configuration=production
+
+      # Поднимаем локальный веб-сервер (HTTP, но на 0.0.0.0)
+    - name: Serve dist on 4200
+      run: |
+        npx http-server ./dist/<project-name> -a 0.0.0.0 -p 4200 &        
+        echo $! > web.pid
+
+      # Ставим и запускаем ngrok ➜ HTTPS-туннель
+    - name: Start ngrok tunnel
+      env:
+        NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}   # ⚠️ Добавьте в Secrets!
+      run: |
+        curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | \
+          sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
+        echo "deb https://ngrok-agent.s3.amazonaws.com stable main" | \
+          sudo tee /etc/apt/sources.list.d/ngrok.list
+        sudo apt update -qq && sudo apt install -y ngrok
+        ngrok config add-authtoken "$NGROK_TOKEN"
+        # --host-header=rewrite чинит «Invalid Host header»
+        ngrok http --log=stdout --host-header=rewrite 4200 > ngrok.log &
+        echo $! > ngrok.pid
+
+      # Ждём, пока ngrok отдаст public_url и кладём его в переменную
+    - name: Extract ngrok HTTPS URL
+      id: get-url
+      run: |
+        sudo apt-get -y install jq
+
+      # ждём, пока появится HTTPS-туннель
+      until curl -s http://127.0.0.1:4040/api/tunnels \
+            | jq -e '.tunnels[] | select(.proto=="https") | .public_url' >/dev/null; do
+        sleep 2
+      done
+
+      # сохраняем публичный URL в переменную
+      NGROK_URL=$(curl -s http://127.0.0.1:4040/api/tunnels \
+              | jq -r '.tunnels[] | select(.proto=="https") | .public_url')
+
+      echo "url=$NGROK_URL" >> $GITHUB_OUTPUT
+
+      # Запускаем Playwright
+    - name: Run Playwright tests against HTTPS
+      env:
+        BASE_URL: ${{ steps.get-url.outputs.url }}
       run: npx playwright test
 
       # Сохраняем отчет Playwright

@@ -2,7 +2,7 @@ export class StartNgrokPage{
     constructor(page){
         this.page = page;
         this.visitSiteButton = page.getByRole('button', { name: 'Visit Site' })
-        this.backToAppLink = page.getByRole('link', { name: 'Back to Application' })
+        this.backToAppLink = page.getByRole('link', { name: '« Back to Application' })
     }
 
     async open(BASE_URL) {
