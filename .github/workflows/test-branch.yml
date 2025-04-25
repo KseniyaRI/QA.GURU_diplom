@@ -21,6 +21,10 @@ jobs:
     # 1) Чекаутим репозиторий
     - uses: actions/checkout@v4
 
+    # 2) Даем права на Docker-сокет
+    - name: Grant permissions to Docker socket
+      run: sudo chmod 666 /var/run/docker.sock
+
     # 2) Настраиваем эмуляцию ARM (QEMU)
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
