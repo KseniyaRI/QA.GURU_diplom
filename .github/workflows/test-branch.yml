@@ -25,10 +25,6 @@ jobs:
     - name: Grant permissions to Docker socket
       run: sudo chmod 666 /var/run/docker.sock
 
-    # 2) Настраиваем эмуляцию ARM (QEMU)
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-
     # 3) Поднимаем Docker Buildx
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
