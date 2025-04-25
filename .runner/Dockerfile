@@ -24,6 +24,14 @@ RUN npm install -g allure-commandline@2.x
 RUN npm install -g --unsafe-perm playwright && \
     npx playwright install --with-deps
 
+    # 5. Добавляем runner в группу docker (чтобы мог обращаться к /var/run/docker.sock)
+# Настройка доступа runner к Docker-сокету (только если сокет примонтирован)
+RUN if [ -S /var/run/docker.sock ]; then \
+      DOCKER_GID=$(stat -c '%g' /var/run/docker.sock) && \
+      groupadd -for -g "$DOCKER_GID" docker && \
+      usermod -aG docker runner; \
+    fi
+
 # 5. Копируем entrypoint, даём права и меняем владельца всего /home/runner
 COPY entrypoint.sh /home/runner/entrypoint.sh
 RUN chown -R runner:runner /home/runner && \
