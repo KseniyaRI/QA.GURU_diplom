@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   testE2E:
-    runs-on: self-hosted
+    runs-on: [self-hosted, linux]
     env:
       BASE_URL: ${{ secrets.BASE_URL }} 
     steps:
