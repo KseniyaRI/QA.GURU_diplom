@@ -11,7 +11,7 @@ export default defineConfig({
   workers: 1,
 
   reporter: [['html', { open: 'never' }] , ['allure-playwright']],
-  outputDir: 'test-results/',
+  outputDir: 'test-results/output/',
   use: {
     baseURL: process.env.BASE_URL,
     headless: true, // ??

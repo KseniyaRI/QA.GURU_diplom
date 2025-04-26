@@ -39,15 +39,15 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test 
-
+        run: npx playwright test specs/ --reporter=list --reporter=junit --reporter=allure-playwright
+        
       - name: Upload Playwright test results
         uses: actions/upload-artifact@v4
         if: always()
         continue-on-error: true
         with:
           name: test-results
-          path: test-results
+          path: test-results/output
           retention-days: 30
 
       - name: Upload Allure results
