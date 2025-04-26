@@ -27,20 +27,25 @@ jobs:
     - name: Grant permissions to Docker socket
       run: sudo chmod 666 /var/run/docker.sock
 
-    # 3) Поднимаем Docker Buildx
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
-    # 4) Собираем нужный образ (или ваш action)
-    - name: Build self-hosted runner image
+    - name: Build self-hosted runner image with registry cache
       uses: docker/build-push-action@v3
       with:
         context:    .runner
         file:       .runner/Dockerfile
         push:       false
-        tags:       gh-self-hosted-runner:amd64
-        cache-from: type=gha
-        cache-to:   type=gha,mode=max
+        tags:       ghcr.io/${{ github.repository_owner }}/self-hosted-runner:cache
+        cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/self-hosted-runner:cache
+        cache-to:   type=registry,ref=ghcr.io/${{ github.repository_owner }}/self-hosted-runner:cache,mode=max
 
       # Устанавливаем Node.js
     - uses: actions/setup-node@v4
