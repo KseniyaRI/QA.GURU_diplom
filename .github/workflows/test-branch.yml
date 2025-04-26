@@ -39,7 +39,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test specs/ --reporter=list --reporter=junit --reporter=allure-playwright --output=test-results
+        run: npx playwright test 
 
       - name: Upload Playwright test results
         uses: actions/upload-artifact@v4
