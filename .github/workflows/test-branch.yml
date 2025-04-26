@@ -34,13 +34,13 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+
       - name: Run Playwright tests
-        run: npx playwright test \
-            --reporter=list \
-            --reporter=junit \
-            --reporter=allure-playwright
+        run: npx playwright test specs/ --reporter=list --reporter=junit --reporter=allure-playwright
+
       - name: Upload Playwright test results
         uses: actions/upload-artifact@v4
         if: always()
@@ -49,6 +49,7 @@ jobs:
           name: test-results
           path: test-results
           retention-days: 30
+          
       - name: Upload Allure results
         uses: actions/upload-artifact@v4
         if: always()
