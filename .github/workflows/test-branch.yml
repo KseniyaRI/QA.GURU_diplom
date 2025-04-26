@@ -43,9 +43,10 @@ jobs:
         context:    .runner
         file:       .runner/Dockerfile
         push:       false
-        tags:       ghcr.io/${{ github.repository_owner }}/self-hosted-runner:cache
-        cache-from: type=registry,ref=ghcr.io/${{ github.repository_owner }}/self-hosted-runner:cache
-        cache-to:   type=registry,ref=ghcr.io/${{ github.repository_owner }}/self-hosted-runner:cache,mode=max
+        tags:       ghcr.io/kseniyari/self-hosted-runner:cache
+        cache-from: type=registry,ref=ghcr.io/kseniyari/self-hosted-runner:cache
+        cache-to:   type=registry,ref=ghcr.io/kseniyari/self-hosted-runner:cache,mode=max
+
 
       # Устанавливаем Node.js
     - uses: actions/setup-node@v4
