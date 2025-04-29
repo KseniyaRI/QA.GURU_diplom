@@ -74,7 +74,7 @@ jobs:
         if: always()
         run: |
           allurectl upload allure-results \
-            --endpoint https://allure.autotests.cloud/api \
+            --endpoint https://allure.autotests.cloud \
             --project-id 4736 \
             --token ${{ secrets.ALLURE_TESTOPS_TOKEN }} \
             --launch-name "GitHub Run #${{ github.run_number }}"
