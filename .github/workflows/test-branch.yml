@@ -49,6 +49,11 @@ jobs:
         
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+
+      - name: Clean previous Allure results
+        run: |
+          rm -rf allure-results || true
+          mkdir -p allure-results
         
       - name: Run Playwright tests
         run: |
@@ -78,54 +83,23 @@ jobs:
           npm install -g allure-commandline@2.x --force
           allure generate allure-results --clean -o allure-report
           
-      - name: Download Allure Notifications
+      - name: Setup Allure Notifications
         if: always()
         continue-on-error: true
         run: |
-          # Создаем директорию для уведомлений
-          mkdir -p notifications
+          # Создаем директорию для шаблонов
+          mkdir -p notifications/templates
           
           # Скачиваем jar-файл для отправки уведомлений
           curl -o notifications/allure-notifications-4.9.0.jar -L https://github.com/qa-guru/allure-notifications/releases/download/4.9.0/allure-notifications-4.9.0.jar
           
-          # Создаем файл конфигурации для Telegram
-          cat > notifications/telegram.json << 'EOL'
-          {
-            "base": {
-              "project": "QA.GURU_diplom",
-              "environment": "Production",
-              "comment": "Playwright Test Results",
-              "reportLink": "${reportLink}",
-              "language": "ru",
-              "messenger": "telegram",
-              "allureFolder": "allure-report/",
-              "enableChart": true
-            },
-            "telegram": {
-              "token": "${TELEGRAM_TOKEN}",
-              "chat": "${TELEGRAM_CHAT}",
-              "replyTo": ""
-            }
-          }
-          EOL
+          # Создаем только шаблоны, используя существующий telegram.json
+          echo '<#macro formatTime time><#if time??>${time}</#if></#macro>' > notifications/templates/commons.ftl
           
-      - name: Create Notification Templates
-        if: always()
-        continue-on-error: true
-        run: |
-          # Создаем необходимые директории и шаблоны
-          mkdir -p notifications/templates
-          
-          # Создаем commons.ftl
-          cat > notifications/templates/commons.ftl << 'EOL'
-          <#macro formatTime time><#if time??>${time}</#if></#macro>
-          EOL
-          
-          # Создаем telegram.ftl с импортом commons.ftl
-          cat > notifications/templates/commons.ftl << 'EOL'
+          cat > notifications/templates/telegram.ftl << 'EOL'
           <#import "commons.ftl" as commons>
           {
-            "message": "<b>${report.name}</b>\n\n<b>Environment:</b> ${report.environment}\n<b>Comment:</b> ${report.comment}\n<b>Duration:</b> <#if report.time??>${report.time.duration}</#if>\n\n<a href='${report.url}'>Отчет на GitHub Pages</a>",
+            "message": "<b>${report.name}</b>\n\n<b>Environment:</b> ${report.environment}\n<b>Comment:</b> ${report.comment}\n<b>Duration:</b> <#if report.time??>${report.time.duration}</#if>\n\n<b>Текущий запуск:</b>\n✅ Успешно: ${report.statistic.passed}\n❌ Упало: ${report.statistic.failed}\n⚠️ Сломано: ${report.statistic.broken}\n\n<a href='${report.url}'>Отчет на GitHub Pages</a>",
             "parse_mode": "HTML"
           }
           EOL
@@ -134,8 +108,8 @@ jobs:
         if: always()
         continue-on-error: true
         run: |
-          # Запускаем отправку уведомлений
-          java "-DconfigFile=notifications/commons.json" \
+          # Запускаем отправку уведомлений, используя существующий файл конфигурации
+          java "-DconfigFile=notifications/telegram.json" \
             "-Dbase.reportLink=https://kseniayari.github.io/QA.GURU_diplom/" \
             -jar notifications/allure-notifications-4.9.0.jar
         env:
