@@ -1,84 +1,141 @@
 name: Playwright tests working web-service
 on:
   push:
-    branches: [ test-branch ]
+    branches: [ test-branch ]  # Запускать при push в ветку test-branch
   pull_request:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ main ]         # Запускать при pull request в ветку main
+  workflow_dispatch:           # Разрешить ручной запуск из интерфейса GitHub
 permissions:
-  contents: write
-  pages: write
-  packages: write
+  contents: write              # Разрешение на запись содержимого репозитория
+  pages: write                 # Разрешение на публикацию GitHub Pages
+  packages: write              # Разрешение на публикацию пакетов
 jobs:
   testE2E:
-    timeout-minutes: 30
-    runs-on: [ self-hosted, ARM64 ]
+    timeout-minutes: 30        # Ограничение времени выполнения задачи
+    runs-on: [ self-hosted, ARM64 ]  # Запускать на self-hosted раннере с ARM64 архитектурой
     env:
+      # Подключение всех необходимых секретов из GitHub Secrets для тестов
       BASE_URL: ${{ secrets.BASE_URL }}
       KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL }}
       CLIENT_CODE: ${{ secrets.CLIENT_CODE }}
       USERNAME: ${{ secrets.USERNAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
+      ALLURE_TESTOPS_TOKEN: ${{ secrets.ALLURE_TESTOPS_TOKEN }}  # Токен для Allure TestOps
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Grant Docker socket permissions
+      - uses: actions/checkout@v4  # Шаг 1: Клонирование репозитория
+      
+      - name: Grant Docker socket permissions  # Шаг 2: Предоставление прав для Docker
         run: sudo chmod 666 /var/run/docker.sock
-
-      - uses: actions/setup-node@v4
+        
+      - name: Set up JDK 11  # Шаг 3: Установка Java - необходима для Allure
+        uses: actions/setup-java@v3
         with:
-          node-version: lts/*
-
-      - uses: actions/cache@v3
+          distribution: 'temurin'  # Выбор дистрибутива Java (Eclipse Temurin)
+          java-version: '11'       # Версия Java
+          
+      - uses: actions/setup-node@v4  # Шаг 4: Установка Node.js
+        with:
+          node-version: lts/*  # Использование последней LTS версии Node.js
+          
+      - uses: actions/cache@v3  # Шаг 5: Кэширование npm-зависимостей для ускорения
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-npm-
-
-      - name: Install dependencies
+            
+      - name: Install dependencies  # Шаг 6: Установка зависимостей проекта
         run: npm ci
-
-      - name: Install Playwright Browsers
+        
+      - name: Install Playwright Browsers  # Шаг 7: Установка браузеров для Playwright
         run: npx playwright install --with-deps
-
-      - name: Run Playwright tests
+        
+      - name: Run Playwright tests  # Шаг 8: Запуск тестов с репортерами
         run: npx playwright test specs/ --reporter=list --reporter=junit --reporter=allure-playwright
         
-      - name: Upload Playwright test results
+      - name: Upload Playwright test results  # Шаг 9: Загрузка результатов тестов как артефакт
         uses: actions/upload-artifact@v4
-        if: always()
-        continue-on-error: true
+        if: always()  # Выполнять даже при ошибках в предыдущих шагах
+        continue-on-error: true  # Продолжать выполнение даже при ошибке на этом шаге
         with:
           name: test-results
-          path: test-results/output
-          retention-days: 30
-
-      - name: Upload Allure results
+          path: test-results/output  # Путь к результатам тестов
+          retention-days: 30  # Хранить артефакты 30 дней
+          
+      - name: Upload Allure results  # Шаг 10: Загрузка Allure-результатов как артефакт
         uses: actions/upload-artifact@v4
         if: always()
         continue-on-error: true
         with:
           name: allure-results
-          path: allure-results
+          path: allure-results  # Путь к Allure-результатам
           retention-days: 30
-      - name: Generate Allure Report
+          
+      - name: Upload results to Allure TestOps  # Шаг 11: Отправка результатов в Allure TestOps
+        if: always()
+        continue-on-error: true
+        run: |
+          # Установка Allure CLI с параметром --force для предотвращения ошибок
+          npm install -g allure-commandline@2.x --force
+          
+          # Отправка результатов в Allure TestOps через API
+          allure testops upload \
+            --endpoint ${{ secrets.ALLURE_TESTOPS_ENDPOINT }}  # Эндпоинт API Allure TestOps
+            --project-id ${{ secrets.ALLURE_TESTOPS_PROJECT_ID }}  # ID проекта в Allure TestOps
+            --token ${{ secrets.ALLURE_TESTOPS_TOKEN }}  # Токен авторизации
+            ./allure-results  # Путь к результатам для загрузки
+      
+      - name: Generate Allure Report  # Шаг 12: Генерация HTML-отчета Allure
         if: always()
         run: |
-          npm install -g allure-commandline@2.x
-          allure generate allure-results --clean -o allure-report
-      - name: Upload Allure HTML report
+          npm install -g allure-commandline@2.x --force
+          allure generate allure-results --clean -o allure-report  # Создание HTML-отчета
+          
+      - name: Send Telegram Notifications  # Шаг 13: Отправка уведомлений в Telegram
+        if: always()
+        continue-on-error: true
+        run: |
+          # Создаем необходимые директории и шаблон, если их нет
+          mkdir -p notifications/templates
+          
+          if [ ! -f notifications/templates/telegram.ftl ]; then
+            cat > notifications/templates/telegram.ftl << 'EOL'
+            <#import "commons.ftl" as commons>
+            {
+              "message": "<b>${report.name}</b>\n\n<b>Environment:</b> ${report.environment}\n<b>Comment:</b> ${report.comment}\n<b>Duration:</b> ${report.time.duration}\n<b>Total scenarios:</b> ${report.statistic.total}\n<b>Total passed:</b> ${report.statistic.passed} (${report.statistic.passedPercentage}%)\n<b>Total failed:</b> ${report.statistic.failed} (${report.statistic.failedPercentage}%)\n<b>Total broken:</b> ${report.statistic.broken}\n<b>Total unknown:</b> ${report.statistic.unknown}\n<b>Total skipped:</b> ${report.statistic.skipped}\n<b>Report available at the link:</b> ${report.reportLink}",
+              "parse_mode": "HTML"
+            }
+            EOL
+          fi
+          
+          # Запускаем отправку уведомлений, используя telegram.json
+          java "-DconfigFile=notifications/telegram.json" \
+              "-Dbase.reportLink=https://kseniyari.github.io/QA.GURU_diplom/" \
+              -jar notifications/allure-notifications-4.9.0.jar
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT: ${{ secrets.TELEGRAM_CHAT }}
+          
+      - name: Upload Allure HTML report  # Шаг 14: Загрузка HTML-отчета как артефакт
         uses: actions/upload-artifact@v4
         if: always()
         continue-on-error: true
         with:
           name: allure-report
-          path: allure-report
-      - name: Deploy report to GitHub Pages
+          path: allure-report  # Путь к сгенерированному отчету
+          retention-days: 30
+          
+      - name: Deploy report to GitHub Pages  # Шаг 15: Публикация отчета на GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: always()
         continue-on-error: true
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./allure-report
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Токен для доступа к GitHub API
+          publish_branch: gh-pages  # Ветка для публикации Pages
+          publish_dir: ./allure-report  # Директория с отчетом для публикации
+          
+      - name: Output TestOps URL  # Шаг 16: Просто выводим ссылку на Allure TestOps
+        if: always()
+        continue-on-error: true
+        run: |
+          echo "Allure TestOps project: ${{ secrets.ALLURE_TESTOPS_URL }}/project/${{ secrets.ALLURE_TESTOPS_PROJECT_ID }}"

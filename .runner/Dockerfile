@@ -46,4 +46,3 @@ USER runner
 
 WORKDIR /home/runner
 ENTRYPOINT ["./entrypoint.sh"]
-
