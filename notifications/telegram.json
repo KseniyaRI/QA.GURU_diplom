@@ -12,8 +12,8 @@
     "customData": {}
   },
   "telegram": {
-    "token": "${TELEGRAM_TOKEN}",
-    "chat": "${TELEGRAM_CHAT}",
+    "token": "",
+    "chat": "",
     "replyTo": ""
   }
 }
