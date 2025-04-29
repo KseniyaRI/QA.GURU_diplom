@@ -71,19 +71,23 @@ jobs:
           path: allure-results  # Путь к Allure-результатам
           retention-days: 30
           
-      - name: Upload results to Allure TestOps  # Шаг 11: Отправка результатов в Allure TestOps
+      - name: Upload results to Allure TestOps
         if: always()
         continue-on-error: true
         run: |
-          # Установка Allure CLI с параметром --force для предотвращения ошибок
+          # Явно устанавливаем Allure CLI с поддержкой команды testops
           npm install -g allure-commandline@2.x --force
+          npm install -g allure-js-commons
+          
+          # Проверяем доступные команды
+          allure --help
           
           # Отправка результатов в Allure TestOps через API
           allure testops upload \
-            --endpoint ${{ secrets.ALLURE_TESTOPS_ENDPOINT }}  # Эндпоинт API Allure TestOps
-            --project-id ${{ secrets.ALLURE_TESTOPS_PROJECT_ID }}  # ID проекта в Allure TestOps
-            --token ${{ secrets.ALLURE_TESTOPS_TOKEN }}  # Токен авторизации
-            ./allure-results  # Путь к результатам для загрузки
+            --endpoint ${{ secrets.ALLURE_TESTOPS_ENDPOINT }} \
+            --project-id ${{ secrets.ALLURE_TESTOPS_PROJECT_ID }} \
+            --token ${{ secrets.ALLURE_TESTOPS_TOKEN }} \
+            ./allure-results
       
       - name: Generate Allure Report  # Шаг 12: Генерация HTML-отчета Allure
         if: always()
@@ -100,7 +104,7 @@ jobs:
           
           if [ ! -f notifications/templates/telegram.ftl ]; then
             cat > notifications/templates/telegram.ftl << 'EOL'
-          #import "commons.ftl" as commons>
+          <#import "commons.ftl" as commons>
           {
             "message": "<b>${report.name}</b>\n\n<b>Environment:</b> ${report.environment}\n<b>Comment:</b> ${report.comment}\n<b>Duration:</b> ${report.time.duration}\n",
             "parse_mode": "HTML"
