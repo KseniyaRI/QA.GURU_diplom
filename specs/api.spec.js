@@ -118,12 +118,14 @@ test.describe('API проверки', () => {
         // Порядок сортировки (по убыванию)               
         sortOrder: 'DESC'              
       });
+
       const logResponse = await request.get(`${BASE_URL}/api/engagements/${firstEngId}/logs?${params.toString()}`, {
         headers: {
           "Authorization": `Bearer ${authToken}`,
           "Accept": "application/json"
         }
       });
+
       expect(logResponse.status()).toBe(200);
       const logsEng = await logResponse.json();
   
@@ -145,6 +147,7 @@ test.describe('API проверки', () => {
           "Accept": "application/json"
         }
       });
+      
       expect(teamMembersResponse.status()).toBe(200);
       const teamMembers = await teamMembersResponse.json();
       

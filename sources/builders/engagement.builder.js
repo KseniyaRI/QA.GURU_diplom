@@ -54,4 +54,4 @@ export class EngagementBuilder {
             departmentId: this.departmentIdEng
         }
     }
-};
+}

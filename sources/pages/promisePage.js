@@ -20,5 +20,3 @@ export class PromisePage {
         await this.continueButton.click();
     }
 }
-  //await page.getByRole('heading', { name: 'until fooey wilted foodstuffs' }).click();
-  //await page.getByRole('heading', { name: 'Happy friday' }).click();

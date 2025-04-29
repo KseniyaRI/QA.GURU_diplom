@@ -1,4 +1,3 @@
-// import 'dotenv/config';      // <-- прочитает .env в process.env
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
