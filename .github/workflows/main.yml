@@ -137,13 +137,13 @@ jobs:
             "base": {
               "logo": "",
               "project": "QA.GURU_diplom",
-              "environment": "Chrome Browser, Windows, 1440*900",
+              "environment": "Chrome Browser, Windows, 1440×900",
               "comment": "Тесты завершены",
               "reportLink": "https://kseniayari.github.io/QA.GURU_diplom/",
               "language": "ru",
               "allureFolder": "allure-report",
               "enableChart": true,
-              "enableSuitesPublishing": false,
+              "enableSuitesPublishing": false
             },
             "telegram": {
               "token": "$TELEGRAM_TOKEN",
