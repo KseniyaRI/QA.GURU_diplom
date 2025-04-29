@@ -1,0 +1,2 @@
+UUID первого проекта: undefined
+true

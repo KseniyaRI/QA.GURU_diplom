@@ -1,0 +1,2 @@
+[AsyncFunction: userInfoBlock]
+locator('.MuiStack-root > p.MuiTypography-body1')

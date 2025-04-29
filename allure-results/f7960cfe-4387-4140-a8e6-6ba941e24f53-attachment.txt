@@ -1,0 +1,11 @@
+APIResponse: 200 OK
+  Date: Sat, 26 Apr 2025 20:06:57 GMT
+  Content-Type: text/html
+  Content-Length: 944
+  Connection: keep-alive
+  Last-Modified: Fri, 25 Apr 2025 12:46:33 GMT
+  ETag: "680b8429-3b0"
+  Expires: Sat, 26 Apr 2025 20:06:56 GMT
+  Cache-Control: no-cache
+  Accept-Ranges: bytes
+  Strict-Transport-Security: max-age=15724800; includeSubDomains

@@ -1,0 +1,6 @@
+{
+  data: {
+    pagination: { limit: 100, offset: 0, total: 1, count: 1 },
+    items: [ [Object] ]
+  }
+}

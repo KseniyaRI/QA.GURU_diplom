@@ -1,0 +1,1 @@
+Ошибка аутентификации: {"error":"invalid_request","error_description":"Missing form parameter: grant_type"}

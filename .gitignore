@@ -2,9 +2,6 @@
 /blob-report/
 /playwright/.cache/
 /node_modules/
-/allure-results/
-/allure-report/
 /tests/.DS_Store
 .DS_Store
-.allure
 .env

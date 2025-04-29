@@ -1,0 +1,11 @@
+APIResponse: 200 OK
+  Date: Sun, 27 Apr 2025 18:58:15 GMT
+  Content-Type: application/json; charset=utf-8
+  Transfer-Encoding: chunked
+  Connection: keep-alive
+  X-Powered-By: Express
+  Cache-Control: no-store
+  ETag: W/"21db-q77EQ1TCsfLmnmIgMiOUEV+sobM"
+  Vary: Accept-Encoding
+  Content-Encoding: gzip
+  Strict-Transport-Security: max-age=15724800; includeSubDomains
