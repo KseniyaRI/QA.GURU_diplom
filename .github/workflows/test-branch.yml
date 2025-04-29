@@ -22,6 +22,7 @@ jobs:
       PASSWORD: ${{ secrets.PASSWORD }}
       TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
       TELEGRAM_CHAT: ${{ secrets.TELEGRAM_CHAT }}
+      ALLURE_TESTOPS_TOKEN: ${{ secrets.ALLURE_TESTOPS_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
@@ -60,15 +61,31 @@ jobs:
       - name: Run Playwright tests
         run: |
           npx playwright test specs/ --reporter=list --reporter=junit --reporter=allure-playwright
+
+      # Установка и запуск allurectl для загрузки результатов
+      - name: Install allurectl
+        if: always()
+        run: |
+          curl -o allurectl -L "https://github.com/allure-framework/allurectl/releases/latest/download/allurectl_linux_arm64"
+          chmod +x allurectl
+          sudo mv allurectl /usr/local/bin/
+          
+      - name: Upload results to Allure TestOps
+        if: always()
+        run: |
+          allurectl upload allure-results \
+            --endpoint https://allure.autotests.cloud/api \
+            --project-id 4736 \
+            --token ${{ secrets.ALLURE_TESTOPS_TOKEN }} \
+            --launch-name "GitHub Run #${{ github.run_number }}"
         
-      - name: Upload Playwright test results
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         if: always()
         continue-on-error: true
         with:
           name: test-results
           path: test-results
-          retention-days: 30
+          retention-days: 20
           
       - name: Upload Allure results
         uses: actions/upload-artifact@v4
