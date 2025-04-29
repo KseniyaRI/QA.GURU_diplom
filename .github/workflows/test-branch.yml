@@ -20,6 +20,8 @@ jobs:
       CLIENT_CODE: ${{ secrets.CLIENT_CODE }}
       USERNAME: ${{ secrets.USERNAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      TELEGRAM_CHAT: ${{ secrets.TELEGRAM_CHAT }}
 
     steps:
       - uses: actions/checkout@v4
