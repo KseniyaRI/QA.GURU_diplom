@@ -1,9 +1,0 @@
-Статус ответа: 200
-Токен успешно получен
-Статус ответа API: 200
-Данные от API: {
-  data: {
-    pagination: { limit: 100, offset: 0, total: 1, count: 1 },
-    items: [ [Object] ]
-  }
-}

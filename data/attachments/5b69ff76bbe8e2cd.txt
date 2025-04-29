@@ -1,5 +1,0 @@
-engagment.typeIds: [
-  'c39b29d4-7811-4f0e-b7cb-d3df92ca392c',
-  '3a83d552-6143-44cd-bc57-4f28f699e767'
-]
-updateEngResponse.data.typeIds: undefined

@@ -1,8 +1,0 @@
-UUID первого проекта: 3abd6b2c-85d2-4885-bd4b-ec3be5d444d8
-3abd6b2c-85d2-4885-bd4b-ec3be5d444d8
-f0a0e2e5-7251-43b1-bff2-c88153c546bb
-63fa71e6-3e3d-4a96-91f0-a380644da794
-7129b7b5-2ceb-4011-94f3-d1f3f5a1d0f6
-7cfdc93c-c855-46a5-b606-5205d0c94ce6
-fabf0c2d-c3fe-4c00-98bb-a34a1122f301
-af8b8cef-8e42-4dc6-ae66-99273e0acdf8

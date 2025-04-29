@@ -1,5 +1,0 @@
-URL запроса: https://aurora-dev.dev.tedo.ru/api/dictionaries/clients?search=26402080
-Заголовки запроса: { Authorization: 'Bearer undefined', Accept: 'application/json' }
-Статус ответа API: 401
-Первые 200 символов ответа: {"statusCode":"401","error":"Unauthorized","entity":"user","message":"Request failed with status code 401"}
-Получен некорректный ответ от сервера
