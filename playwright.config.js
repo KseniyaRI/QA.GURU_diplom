@@ -12,7 +12,7 @@ export default defineConfig({
   workers: 1,
 
   reporter: [['html', { open: 'never' }] , ['allure-playwright']],
-  outputDir: 'test-results/trace/',
+  outputDir: 'test-results',
   use: {
     // trace: 'on-first-retry',  сохранять трассировку при падении
     trace: 'retain-on-failure', // записывать трассировку всегда, но сохранять только если тест не прошел
