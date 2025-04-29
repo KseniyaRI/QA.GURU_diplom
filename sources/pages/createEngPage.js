@@ -1,78 +1,47 @@
-/*export class CreateEngPage {
+// страница создания Engagement
+
+export class CreateEngPage {
     constructor(page) {
         this.page = page;
         this.clientNameField = page.getByRole('combobox', { name: 'Название клиента' })
-        this.otdelField = page.getByRole('combobox', { name: 'Отдел общего аудита' })
-        this.castomNameField = page.getByRole('heading', { name: 'Название проекта*' })
-        this.createButton = page.getByRole('button', { name: 'Создать' })
-        this.linkPromise1 = page.getByRole('link', { name: 'Правил независимости аудиторов и аудиторских организаций' })
-        this.linkPromise2 = page.getByRole('link', { name: 'Кодекса профессиональной этики аудиторов России' })
-        this.linkPromise3 = page.getByRole('link', { name: 'Положения об аудиторской независимости ТеДо' })
-        this.linkPromise4 = page.getByRole('link', { name: 'Положение о системе управления качеством' })
-        this.checkBox = page.getByRole('checkbox')
-        this.promiseButton = page.getByRole('button', { name: 'Подтвердить независимость и подключиться к проекту' })
-        this.dalsheButton = page.getByRole('button', { name: 'Продолжить' })
+        this.departmentField = page.getByRole('combobox', { name: 'Отдел общего аудита' })
+        this.typeField = page.getByRole('combobox', { name: 'Аудит' })
+        this.reportingStandardField = page.getByRole('combobox', { name: 'МСФО' })
+        this.verificationPeriodsField = page.getByRole('combobox', { name: 'год' })
+        this.verificationYearField = page.getByRole('button', { name: '2025' })
+        this.customEngNameField = page.getByRole('textbox', { name: 'Название клиента / Audit /' })
+        this.createEngButton = page.getByRole('button', { name: 'Создать' })
+        this.welcomeM = page.getByRole('heading', { name: 'Добро пожаловать в проект' })
+        this.clientNameFieldError = page.locator('.MuiGrid-grid-xs-2.css-15j76c0:nth-child(1) p.Mui-error');
+        this.departmentFieldError = page.locator('.MuiGrid-grid-xs-2.css-15j76c0:nth-child(2) p.Mui-error');
+        this.customNameFieldError = page.locator('p.MuiFormHelperText-root.Mui-error.MuiFormHelperText-sizeMedium.css-eg1xdz');
     }
 
-    async createEngagement(){
+    async createEngagement(name, clientCode, departmentName, type, reportingStandard, verificationPeriods, verificationYear){
+        await this.customEngNameField.click();
+        await this.customEngNameField.fill(name);
+        await this.clientNameField.click();
+        await this.clientNameField.fill(clientCode);
+        await this.page.getByRole('option', { name: 'Happy friday' }).waitFor({ state: 'visible' });
+        await this.page.getByRole('option', { name: 'Happy friday' }).click({ force: true });
+        await this.departmentField.click();
+        await this.page.getByRole('option', { name: departmentName }).click();
+        await this.typeField.click();
+        await this.page.getByRole('option', { name: type }).click();
+        await this.reportingStandardField.click();
+        await this.page.getByRole('option', { name: reportingStandard }).click();
+        await this.verificationPeriodsField.click({ force: true });
+        await this.page.getByRole('option', { name: verificationPeriods }).click();
+        await this.verificationYearField.click({ force: true });
+        await this.page.getByRole('option', { name: verificationYear }).click();
+        await this.createEngButton.click();
+        await this.welcomeM.waitFor({ state: 'visible' });
+    }
 
-
-
-
-
-
-
-
-
-
-
-await page.getByRole('combobox', { name: 'Название клиента' }).click();
-await page.getByRole('button', { name: 'Закрыть' }).click();
-await page.getByRole('combobox', { name: 'Название клиента' }).click();
-await page.getByRole('combobox', { name: 'Название клиента' }).fill('Happy ');
-await page.getByText('Happy friday').first().click();
-await page.getByRole('combobox', { name: 'Отдел общего аудита' }).click();
-await page.getByRole('option', { name: 'Отдел аудита финансового сектора' }).click();
-await page.getByRole('combobox', { name: 'Аудит' }).click();
-await page.getByRole('option', { name: 'Аудит', exact: true }).click();
-await page.getByRole('button', { name: 'Закрыть' }).click();
-await page.getByRole('combobox', { name: 'МСФО' }).click();
-await page.getByRole('option', { name: 'МСФО (IFRS Accounting' }).click();
-await page.getByRole('button', { name: 'Закрыть' }).click();
-await page.getByRole('combobox', { name: 'год' }).click();
-await page.getByRole('option', { name: '3 мес' }).click();
-await page.getByRole('button', { name: 'Закрыть' }).click();
-await page.getByRole('button', { name: '2025' }).click();
-await page.getByRole('option', { name: '2026' }).click();
-await page.getByText('Редактируйте название, чтобы оно соответствовало структуре и наполнению проекта').click();
-await page.getByRole('heading', { name: 'Название проекта*' }).click();
-await page.getByRole('textbox', { name: 'Название клиента / Audit /' }).click();
-await page.getByRole('textbox', { name: 'Название клиента / Audit /' }).press('ArrowDown');
-await page.getByRole('textbox', { name: 'Название клиента / Audit /' }).fill('Тестовый проект');
-await page.getByRole('button', { name: 'Сгенерировать название' }).click();
-await page.getByRole('button', { name: 'Создать' }).click();
-const page1Promise = page.waitForEvent('popup');
-await page.locator('.MuiBox-root > div > div > div:nth-child(2) > div').first().click();
-const page1 = await page1Promise;
-const page2Promise = page.waitForEvent('popup');
-await page.getByRole('link', { name: 'Правил независимости аудиторов и аудиторских организаций' }).click();
-const page2 = await page2Promise;
-const page3Promise = page.waitForEvent('popup');
-await page.getByRole('link', { name: 'Кодекса профессиональной этики аудиторов России' }).click();
-const page3 = await page3Promise;
-const page4Promise = page.waitForEvent('popup');
-await page.getByRole('link', { name: 'Положения об аудиторской независимости ТеДо' }).click();
-const page4 = await page4Promise;
-const page5Promise = page.waitForEvent('popup');
-await page.getByRole('link', { name: 'Правил внутреннего контроля по противодействию легализации (отмыванию) доходов' }).click();
-const page5 = await page5Promise;
-const page6Promise = page.waitForEvent('popup');
-await page.getByRole('link', { name: 'Положение о системе управления качеством' }).click();
-const page6 = await page6Promise;
-await page.getByRole('checkbox').check();
-await page.getByRole('button', { name: 'Подтвердить независимость и подключиться к проекту' }).click();
-await page.getByText('Мы записали ваше подтверждение независимости. Приятной работы').click();
-await page.getByRole('heading', { name: 'Happy friday / Аудит / МСФО (' }).click();
-await page.locator('svg').nth(4).click();
-await page.getByRole('button', { name: 'Продолжить' }).click();
-*/
+    async validateEngEntities(){
+        await this.createEngButton.click();
+        await this.clientNameFieldError.waitFor({ state: 'visible' });
+        await this.departmentFieldError.waitFor({ state: 'visible' });
+        await this.customNameFieldError.waitFor({ state: 'visible' });
+    }
+}

@@ -7,11 +7,7 @@
   "scripts": {
     "test": " npx playwright test",
     "ui": "npx playwright test --ui",
-    "reportAwesome": "npx allure awesome ./allure-results --single-file",
-    "reportClassic": "npx allure classic ./allure-results --single-file",
-    "report": "npx allure report --clean --open",
-    "open allure report": "allure serve allure-results",
-    "codegen": "npx playwright codegen https://8f7a-46-36-217-190.ngrok-free.app"
+    "codegen": "npx playwright codegen https://aurora-dev.dev.tedo.ru"
   },
   "repository": {
     "type": "git",

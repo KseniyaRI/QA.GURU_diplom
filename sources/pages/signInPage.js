@@ -1,3 +1,5 @@
+// страница логина
+
 export class SignInPage{
     constructor(page){
         this.page = page;
@@ -9,10 +11,6 @@ export class SignInPage{
 
     async open(BASE_URL) {
         await this.page.goto(BASE_URL);
-    }
-
-    async gotoLoginPage(){
-        await this.signInButton.click();
     }
 
     async signInAndEngagementsPage(username, password){

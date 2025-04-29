@@ -15,6 +15,10 @@ jobs:
     runs-on: [ self-hosted, ARM64 ]
     env:
       BASE_URL: ${{ secrets.BASE_URL }}
+      KEYCLOAK_URL: ${{ secrets.KEYCLOAK_URL }}
+      CLIENT_CODE: ${{ secrets.CLIENT_CODE }}
+      USERNAME: ${{ secrets.USERNAME }}
+      PASSWORD: ${{ secrets.PASSWORD }}
     steps:
       - uses: actions/checkout@v4
 
