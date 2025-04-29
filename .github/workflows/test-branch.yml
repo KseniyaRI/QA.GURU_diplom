@@ -75,19 +75,14 @@ jobs:
         if: always()
         continue-on-error: true
         run: |
-          # Явно устанавливаем Allure CLI с поддержкой команды testops
+          # Установка Allure CLI с параметром --force для предотвращения ошибок
           npm install -g allure-commandline@2.x --force
-          npm install -g allure-js-commons
-          
-          # Проверяем доступные команды
-          allure --help
-          
           # Отправка результатов в Allure TestOps через API
           allure testops upload \
             --endpoint ${{ secrets.ALLURE_TESTOPS_ENDPOINT }} \
             --project-id ${{ secrets.ALLURE_TESTOPS_PROJECT_ID }} \
             --token ${{ secrets.ALLURE_TESTOPS_TOKEN }} \
-            ./allure-results
+            allure-results
       
       - name: Generate Allure Report  # Шаг 12: Генерация HTML-отчета Allure
         if: always()
@@ -101,18 +96,21 @@ jobs:
         run: |
           # Создаем необходимые директории и шаблон, если их нет
           mkdir -p notifications/templates
+          # Создаем commons.ftl
+          cat > notifications/templates/commons.ftl << 'EOL'
+          <#macro formatTime time><#if time??>${time}</#if></#macro>
+          EOL
           
-          if [ ! -f notifications/templates/telegram.ftl ]; then
-            cat > notifications/templates/telegram.ftl << 'EOL'
+          # Создаем telegram.ftl шаблон
+          cat > notifications/templates/telegram.ftl << 'EOL'
           <#import "commons.ftl" as commons>
           {
             "message": "<b>${report.name}</b>\n\n<b>Environment:</b> ${report.environment}\n<b>Comment:</b> ${report.comment}\n<b>Duration:</b> ${report.time.duration}\n",
             "parse_mode": "HTML"
           }
           EOL
-          fi
           
-          # Запускаем отправку уведомлений, используя telegram.json
+          # Запускаем отправку уведомлений
           java "-DconfigFile=notifications/telegram.json" \
             "-Dbase.reportLink=https://kseniayari.github.io/QA.GURU_diplom/" \
             -jar notifications/allure-notifications-4.9.0.jar
@@ -130,7 +128,7 @@ jobs:
           retention-days: 30
           
       - name: Deploy report to GitHub Pages  # Шаг 15: Публикация отчета на GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
         if: always()
         continue-on-error: true
         with:

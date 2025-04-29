@@ -1,21 +1,19 @@
 {
-    "base": {
-      "logo": "",
-      "project": "QA.GURU_diplom_autotests",
-      "environment": "GitHub Actions",
-      "comment": "Playwright Автотесты",
-      "reportLink": "",
-      "language": "ru",
-      "allureFolder": "allure-report",
-      "enableChart": true,
-      "enableSuitesPublishing": false,
-      "customData": {}
-    },
-    "telegram": {
-      "token": "", 
-      "chat": "",   
-      "topic": "",
-      "replyTo": "",
-      "templatePath": "./notifications/templates/telegram.ftl"
-    }
+  "base": {
+    "logo": "",
+    "project": "QA.GURU_diplom",
+    "environment": "GitHub Actions",
+    "comment": "some comment",
+    "reportLink": "",
+    "language": "ru",
+    "allureFolder": "allure-report",
+    "enableChart": true,
+    "enableSuitesPublishing": false,
+    "customData": {}
+  },
+  "telegram": {
+    "token": "",
+    "chat": "",
+    "replyTo": ""
   }
+}
