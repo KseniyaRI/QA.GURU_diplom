@@ -94,23 +94,24 @@ jobs:
         if: always()
         continue-on-error: true
         run: |
-          # Создаем необходимые директории и шаблон, если их нет
+          # Создаем необходимые директории и шаблоны
           mkdir -p notifications/templates
+          
           # Создаем commons.ftl
           cat > notifications/templates/commons.ftl << 'EOL'
           <#macro formatTime time><#if time??>${time}</#if></#macro>
           EOL
           
-          # Создаем telegram.ftl шаблон
+          # Создаем telegram.ftl с импортом commons.ftl
           cat > notifications/templates/telegram.ftl << 'EOL'
           <#import "commons.ftl" as commons>
           {
-            "message": "<b>${report.name}</b>\n\n<b>Environment:</b> ${report.environment}\n<b>Comment:</b> ${report.comment}\n<b>Duration:</b> ${report.time.duration}\n",
+            "message": "<b>${report.name}</b>\n\n<b>Environment:</b> ${report.environment}\n<b>Comment:</b> ${report.comment}\n<b>Duration:</b> <#if report.time??>${report.time.duration}</#if>\n\n<a href='${report.url}'>Отчет на GitHub Pages</a>",
             "parse_mode": "HTML"
           }
           EOL
           
-          # Запускаем отправку уведомлений
+          # Запускаем отправку уведомлений, используя существующий telegram.json
           java "-DconfigFile=notifications/telegram.json" \
             "-Dbase.reportLink=https://kseniayari.github.io/QA.GURU_diplom/" \
             -jar notifications/allure-notifications-4.9.0.jar
