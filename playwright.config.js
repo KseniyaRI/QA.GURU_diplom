@@ -24,9 +24,7 @@ export default defineConfig({
       timeout: 60000,
     },
 
-    screenshot: 'only-on-failure',   // сохранять скриншот при падении
-    trace: 'retain-on-failure',      // сохранять трассировку при падении
-    
+    screenshot: 'only-on-failure',   // сохранять скриншот при падении    
   },
 
   projects: [

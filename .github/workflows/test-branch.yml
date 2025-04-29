@@ -59,7 +59,7 @@ jobs:
         continue-on-error: true  # Продолжать выполнение даже при ошибке на этом шаге
         with:
           name: test-results
-          path: test-results/output  # Путь к результатам тестов
+          path: test-results/trace/  # Путь к результатам тестов
           retention-days: 30  # Хранить артефакты 30 дней
           
       - name: Upload Allure results  # Шаг 10: Загрузка Allure-результатов как артефакт
@@ -91,7 +91,7 @@ jobs:
           npm install -g allure-commandline@2.x --force
           allure generate allure-results --clean -o allure-report  # Создание HTML-отчета
           
-      - name: Send Telegram Notifications  # Шаг 13: Отправка уведомлений в Telegram
+      - name: Send Telegram Notifications
         if: always()
         continue-on-error: true
         run: |
@@ -100,18 +100,18 @@ jobs:
           
           if [ ! -f notifications/templates/telegram.ftl ]; then
             cat > notifications/templates/telegram.ftl << 'EOL'
-            <#import "commons.ftl" as commons>
-            {
-              "message": "<b>${report.name}</b>\n\n<b>Environment:</b> ${report.environment}\n<b>Comment:</b> ${report.comment}\n<b>Duration:</b> ${report.time.duration}\n<b>Total scenarios:</b> ${report.statistic.total}\n<b>Total passed:</b> ${report.statistic.passed} (${report.statistic.passedPercentage}%)\n<b>Total failed:</b> ${report.statistic.failed} (${report.statistic.failedPercentage}%)\n<b>Total broken:</b> ${report.statistic.broken}\n<b>Total unknown:</b> ${report.statistic.unknown}\n<b>Total skipped:</b> ${report.statistic.skipped}\n<b>Report available at the link:</b> ${report.reportLink}",
-              "parse_mode": "HTML"
-            }
-            EOL
+          #import "commons.ftl" as commons>
+          {
+            "message": "<b>${report.name}</b>\n\n<b>Environment:</b> ${report.environment}\n<b>Comment:</b> ${report.comment}\n<b>Duration:</b> ${report.time.duration}\n",
+            "parse_mode": "HTML"
+          }
+          EOL
           fi
           
           # Запускаем отправку уведомлений, используя telegram.json
           java "-DconfigFile=notifications/telegram.json" \
-              "-Dbase.reportLink=https://kseniyari.github.io/QA.GURU_diplom/" \
-              -jar notifications/allure-notifications-4.9.0.jar
+            "-Dbase.reportLink=https://kseniayari.github.io/QA.GURU_diplom/" \
+            -jar notifications/allure-notifications-4.9.0.jar
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT: ${{ secrets.TELEGRAM_CHAT }}
