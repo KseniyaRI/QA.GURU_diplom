@@ -85,17 +85,40 @@ jobs:
           npm install -g allure-commandline@2.x --force
           allure generate allure-results --clean -o allure-report
           
-      - name: Setup Allure Notifications
+      - name: Setup Telegram Configuration
         if: always()
         continue-on-error: true
         run: |
-          # Создаем директорию для шаблонов
+          # Создаем директорию и генерируем конфигурацию с подстановкой переменных
           mkdir -p notifications/templates
           
-          # Скачиваем jar-файл для отправки уведомлений
+          # Скачиваем jar-файл
           curl -o notifications/allure-notifications-4.9.0.jar -L https://github.com/qa-guru/allure-notifications/releases/download/4.9.0/allure-notifications-4.9.0.jar
           
-          # Создаем только шаблоны, используя существующий telegram.json
+          # Создаем telegram.json с подстановкой переменных окружения
+          cat > notifications/telegram.json << EOF
+          {
+            "base": {
+              "logo": "",
+              "project": "QA.GURU_diplom",
+              "environment": "GitHub Actions",
+              "comment": "some comment",
+              "reportLink": "https://kseniayari.github.io/QA.GURU_diplom/",
+              "language": "ru",
+              "allureFolder": "allure-report",
+              "enableChart": true,
+              "enableSuitesPublishing": false,
+              "customData": {}
+            },
+            "telegram": {
+              "token": "$TELEGRAM_TOKEN",
+              "chat": "$TELEGRAM_CHAT",
+              "replyTo": ""
+            }
+          }
+          EOF
+          
+          # Создаем шаблоны
           echo '<#macro formatTime time><#if time??>${time}</#if></#macro>' > notifications/templates/commons.ftl
           
           cat > notifications/templates/telegram.ftl << 'EOL'
