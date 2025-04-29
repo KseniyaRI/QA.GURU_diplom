@@ -1,0 +1,1 @@
+{"data":{"pagination":{"limit":100,"offset":0,"total":1,"count":1},"items":[{"id":"f63e8b41-0931-478e-b281-3276c3079a01","createdAt":"2024-12-19T07:55:39.029Z","updatedAt":"2024-12-19T07:55:39.029Z","clientCode":"26402080","countryName":"Russian Federation","inn":"0000000060","kpp":"000000000","name":"Happy friday","nameEn":"Happy Friday","sector":"Other"}]}}

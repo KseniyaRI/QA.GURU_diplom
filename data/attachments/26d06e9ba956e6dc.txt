@@ -1,0 +1,7 @@
+{
+  id: '3b891e10-ec8a-4eb0-9e1f-f3a398ec1dca',
+  createdAt: '2023-06-12T22:21:17.105Z',
+  updatedAt: '2023-06-12T22:21:17.105Z',
+  name: 'Отдел общего аудита',
+  nameEn: 'Trust - General Assurance'
+}

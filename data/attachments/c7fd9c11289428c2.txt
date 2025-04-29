@@ -1,0 +1,61 @@
+{
+  data: {
+    id: '3abd6b2c-85d2-4885-bd4b-ec3be5d444d8',
+    createdAt: '2025-04-26T12:15:53.817Z',
+    updatedAt: '2025-04-28T08:33:32.878Z',
+    createdBy: {
+      id: '637e9826-0ebb-461d-be35-495379b64c16',
+      city: 'Moscow',
+      email: 'aurora_dev_2@tedo.ru',
+      enabled: true,
+      grade: 'Manager',
+      keycloakId: '046f2d2a-4e4f-4d9d-86c9-c9ac3c7920f0',
+      ldapId: 'a42dfc3d-e40d-403f-83c9-c7a8616caf97',
+      nameEn: 'Tatiana Rusanova',
+      orgStructure: 'CN=Tatiana Rusanova,OU=Assurance,OU=MOW,OU=Users,OU=RU,DC=tedo-dev,DC=local',
+      username: 'trusanova001',
+      identity: 'Tatiana Rusanova'
+    },
+    updatedBy: {
+      id: '637e9826-0ebb-461d-be35-495379b64c16',
+      city: 'Moscow',
+      email: 'aurora_dev_2@tedo.ru',
+      enabled: true,
+      grade: 'Manager',
+      keycloakId: '046f2d2a-4e4f-4d9d-86c9-c9ac3c7920f0',
+      ldapId: 'a42dfc3d-e40d-403f-83c9-c7a8616caf97',
+      nameEn: 'Tatiana Rusanova',
+      orgStructure: 'CN=Tatiana Rusanova,OU=Assurance,OU=MOW,OU=Users,OU=RU,DC=tedo-dev,DC=local',
+      username: 'trusanova001',
+      identity: 'Tatiana Rusanova'
+    },
+    financialYear: 2026,
+    name: '1',
+    status: 'CREATED',
+    verificationYear: 2026,
+    client: {
+      id: 'f63e8b41-0931-478e-b281-3276c3079a01',
+      createdAt: '2024-12-19T07:55:39.029Z',
+      updatedAt: '2024-12-19T07:55:39.029Z',
+      clientCode: '26402080',
+      countryName: 'Russian Federation',
+      inn: '0000000060',
+      kpp: '000000000',
+      name: 'Happy friday',
+      nameEn: 'Happy Friday',
+      sector: 'Other'
+    },
+    isQRPRequired: false,
+    department: {
+      id: '3b891e10-ec8a-4eb0-9e1f-f3a398ec1dca',
+      createdAt: '2023-06-12T22:21:17.105Z',
+      updatedAt: '2023-06-12T22:21:17.105Z',
+      name: 'Отдел общего аудита',
+      nameEn: 'Trust - General Assurance'
+    },
+    reportingStandards: [ [Object] ],
+    team: [ [Object] ],
+    workTypes: [ [Object], [Object], [Object] ],
+    currentUserMetaData: { engagementRoles: [Array], engagementPermissions: [Array] }
+  }
+}

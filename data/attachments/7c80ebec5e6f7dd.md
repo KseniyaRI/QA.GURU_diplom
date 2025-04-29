@@ -1,0 +1,91 @@
+# Test info
+
+- Name: API challenge >> Проверка фильтрации проектов по клиентскому коду
+- Location: /Users/kryabukhin001/Documents/QA.GURU/QA.GURU_diplom/specs/api.spec.js:29:5
+
+# Error details
+
+```
+Error: expect(received).toBe(expected) // Object.is equality
+
+Expected: 200
+Received: 400
+    at /Users/kryabukhin001/Documents/QA.GURU/QA.GURU_diplom/specs/api.spec.js:25:33
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 | import { BASE_URL, KEYCLOAK_URL, USERNAME, PASSWORD, CLIENT_CODE } from '../sources/consts/index.js';
+   3 |
+   4 | const AUTH_DATA = {
+   5 |   password: process.env.PASSWORD,
+   6 |   client_id: "fe-client",
+   7 |   grant_type: "password",
+   8 |   username: process.env.USERNAME
+   9 | };
+  10 |
+  11 | test.describe('API challenge', () => {
+  12 |     let authToken;
+  13 |     test.beforeEach('Авторизация и получение токена', async ({ request }) => {
+  14 |         
+  15 |       const response = await request.post(KEYCLOAK_URL, {
+  16 |         headers: {
+  17 |           "Content-Type": "application/x-www-form-urlencoded"
+  18 |         },
+  19 |         data: AUTH_DATA
+  20 |       });
+  21 |           
+  22 |       const body = await response.json();
+  23 |       authToken = body.access_token;
+  24 |
+> 25 |       expect(response.status()).toBe(200);
+     |                                 ^ Error: expect(received).toBe(expected) // Object.is equality
+  26 |       expect(authToken).toBeTruthy();
+  27 |     });
+  28 |
+  29 |     test('Проверка фильтрации проектов по клиентскому коду', async ({ request }) => {
+  30 |       const clientsResponse = await request.get(`${BASE_URL}/api/dictionaries/clients?search=${CLIENT_CODE}`,{ 
+  31 |         headers: {
+  32 |           "Authorization": `Bearer ${authToken}`,
+  33 |           "Accept": "application/json"
+  34 |         }
+  35 |     });
+  36 |         
+  37 |       expect(clientsResponse.status()).toBe(200);
+  38 |
+  39 |       const responseText = await clientsResponse.json();
+  40 |       console.log(responseText.data.items[0].id);
+  41 |       });
+  42 | });
+  43 |     
+  44 |     
+  45 |     // Шаг 2: Получаем отфильтрованные проекты
+  46 |     /*console.log('Шаг 2: Получение проектов с фильтрацией по ID клиента');
+  47 |     const filteredResponse = await request.get(
+  48 |       `${BASE_URL}/api/engagements?clientIds[]=${selectedClient.id}&limit=50&offset=0`, 
+  49 |       {
+  50 |         headers: {
+  51 |           'Authorization': `Bearer ${authToken}`
+  52 |         }
+  53 |       }
+  54 |     );
+  55 |     
+  56 |     const filteredData = await filteredResponse.json();
+  57 |     expect(filteredResponse.status()).toBe(200);
+  58 |     expect(filteredData.data.items.length).toBeGreaterThan(0);
+  59 |     
+  60 |     console.log(`Получено ${filteredData.data.items.length} проектов для клиента с ID ${selectedClient.id}`);
+  61 |     
+  62 |     // Шаг 3: Проверяем, что все проекты принадлежат выбранному клиенту (только по UUID)
+  63 |     console.log('Шаг 3: Проверка соответствия проектов выбранному клиенту');
+  64 |     for (const project of filteredData.data.items) {
+  65 |       expect(project.client.id).toBe(selectedClient.id);
+  66 |     }
+  67 |     
+  68 |     // Проверка успешна, если мы дошли до этой точки
+  69 |     console.log('Проверка успешна: все проекты принадлежат клиенту с ID', selectedClient.id);
+  70 |   });
+  71 | });*/
+```

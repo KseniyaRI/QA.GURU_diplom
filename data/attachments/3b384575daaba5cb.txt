@@ -1,0 +1,9 @@
+UUID первого проекта: 3abd6b2c-85d2-4885-bd4b-ec3be5d444d8
+Список всех ID проектов:
+1. 3abd6b2c-85d2-4885-bd4b-ec3be5d444d8
+2. f0a0e2e5-7251-43b1-bff2-c88153c546bb
+3. 63fa71e6-3e3d-4a96-91f0-a380644da794
+4. 7129b7b5-2ceb-4011-94f3-d1f3f5a1d0f6
+5. 7cfdc93c-c855-46a5-b606-5205d0c94ce6
+6. fabf0c2d-c3fe-4c00-98bb-a34a1122f301
+7. af8b8cef-8e42-4dc6-ae66-99273e0acdf8

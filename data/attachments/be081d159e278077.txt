@@ -1,0 +1,10 @@
+{
+  name: 'elegantly woot reproachfully as license',
+  departmentId: '4ed1fcb3-96ad-4a2f-be79-2fda08f90544',
+  typeIds: undefined,
+  reportingStandardIds: undefined,
+  verificationPeriods: undefined,
+  verificationYear: undefined,
+  financialYear: undefined
+}
+4ed1fcb3-96ad-4a2f-be79-2fda08f90544
