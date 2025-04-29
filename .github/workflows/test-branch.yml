@@ -23,6 +23,8 @@ jobs:
       TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
       TELEGRAM_CHAT: ${{ secrets.TELEGRAM_CHAT }}
       ALLURE_TESTOPS_TOKEN: ${{ secrets.ALLURE_TESTOPS_TOKEN }}
+      ALLURE_TESTOPS_ENDPOINT: ${{ secrets.ALLURE_TESTOPS_ENDPOINT }} 
+      ALLURE_TESTOPS_PROJECT_ID: ${{ secrets.ALLURE_TESTOPS_PROJECT_ID }}
 
     steps:
       - uses: actions/checkout@v4
@@ -74,8 +76,8 @@ jobs:
         if: always()
         run: |
           allurectl upload allure-results \
-            --endpoint https://allure.autotests.cloud \
-            --project-id 4736 \
+            --endpoint ${{ secrets.ALLURE_TESTOPS_ENDPOINT }} \
+            --project-id ${{ secrets.ALLURE_TESTOPS_PROJECT_ID }} \
             --token ${{ secrets.ALLURE_TESTOPS_TOKEN }} \
             --launch-name "GitHub Run #${{ github.run_number }}"
         

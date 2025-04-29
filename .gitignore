@@ -4,6 +4,6 @@
 /node_modules/
 /tests/.DS_Store
 .DS_Store
-.env
 /allure-results/
 /allure-report/
+/allure-results/

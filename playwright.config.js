@@ -1,18 +1,16 @@
-import 'dotenv/config';      // <-- прочитает .env в process.env
+// import 'dotenv/config';      // <-- прочитает .env в process.env
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './specs',
   timeout: 60000,
-  // forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  //workers: process.env.CI ? 1 : undefined,
+  retries: process.env.CI ? 1 : 0,
 
   // fullyParallel: true, // запускать тесты параллельно
   workers: 1,
-
   reporter: [['html', { open: 'never' }] , ['allure-playwright']],
   outputDir: 'test-results',
+  
   use: {
     // trace: 'on-first-retry',  сохранять трассировку при падении
     trace: 'retain-on-failure', // записывать трассировку всегда, но сохранять только если тест не прошел
