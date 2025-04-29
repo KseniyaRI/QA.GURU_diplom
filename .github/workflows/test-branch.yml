@@ -5,6 +5,13 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+    inputs:
+      ALLURE_JOB_RUN_ID:
+        description: 'ALLURE_JOB_RUN_ID service parameter. Leave blank.'
+        required: false
+      ALLURE_USERNAME:
+        description: 'ALLURE_USERNAME service parameter. Leave blank.'
+        required: false
 permissions:
   contents: write
   pages: write
@@ -19,7 +26,12 @@ jobs:
       CLIENT_CODE: ${{ secrets.CLIENT_CODE }}
       USERNAME: ${{ secrets.USERNAME }}
       PASSWORD: ${{ secrets.PASSWORD }}
-      ALLURE_TESTOPS_TOKEN: ${{ secrets.ALLURE_TESTOPS_TOKEN }}
+      ALLURE_TOKEN: ${{ secrets.ALLURE_TESTOPS_TOKEN }}
+      ALLURE_ENDPOINT: https://r1995k.testops.cloud/api
+      ALLURE_PROJECT_ID: 1
+      ALLURE_RESULTS: allure-results
+      ALLURE_JOB_RUN_ID: ${{ github.event.inputs.ALLURE_JOB_RUN_ID }}
+      
     steps:
       - uses: actions/checkout@v4
       
@@ -49,19 +61,26 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       
-      # Добавление шага с allurectl для TestOps
-      - name: Set up allurectl
-        uses: allure-framework/setup-allurectl@v1
-        with:
-          allure-endpoint: https://r1995k.testops.cloud/api
-          allure-token: ${{ secrets.ALLURE_TESTOPS_TOKEN }}
-          allure-project-id: 1
+      # Используем более надежный способ установки allurectl
+      - name: Install allurectl
+        run: |
+          curl -OL https://github.com/allure-framework/allurectl/releases/latest/download/allurectl_linux_arm64
+          chmod +x allurectl_linux_arm64
+          sudo mv allurectl_linux_arm64 /usr/local/bin/allurectl
+          allurectl --version
         
+      # Добавляем явную проверку параметров allurectl
+      - name: Verify allurectl configuration
+        run: |
+          echo "ALLURE_ENDPOINT: $ALLURE_ENDPOINT"
+          echo "ALLURE_PROJECT_ID: $ALLURE_PROJECT_ID"
+          echo "Token is set: ${{ secrets.ALLURE_TESTOPS_TOKEN != '' }}"
+        
+      # Запускаем тесты с опцией --insecure, чтобы избежать проблем с SSL
       - name: Run Playwright tests with allurectl
         run: |
-          allurectl watch -- npx playwright test specs/ --reporter=list --reporter=junit --reporter=allure-playwright
-        env:
-          ALLURE_RESULTS: allure-results
+          mkdir -p $ALLURE_RESULTS
+          allurectl --insecure watch -- npx playwright test specs/ --reporter=list --reporter=junit --reporter=allure-playwright
         
       - name: Upload Playwright test results
         uses: actions/upload-artifact@v4
@@ -80,6 +99,22 @@ jobs:
           name: allure-results
           path: allure-results
           retention-days: 30
+      
+      # Добавляем запасной вариант отправки результатов, если allurectl failed
+      - name: Upload to TestOps with curl (backup)
+        if: always()
+        continue-on-error: true
+        run: |
+          if [ -d "allure-results" ] && [ "$(ls -A allure-results)" ]; then
+            cd allure-results
+            zip -r ../allure-results.zip .
+            cd ..
+            curl -X POST "$ALLURE_ENDPOINT/upload/project/$ALLURE_PROJECT_ID" \
+              -H "Authorization: Bearer $ALLURE_TOKEN" \
+              -F "allureResults=@allure-results.zip"
+          else
+            echo "No allure results found"
+          fi
           
       - name: Generate Allure Report
         if: always()
