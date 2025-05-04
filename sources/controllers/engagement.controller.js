@@ -1,5 +1,3 @@
-import { BASE_URL } from '../consts/constURL.js';
-
 export class EngagementController {
   constructor(request, authToken) {
     this.request = request;
@@ -11,7 +9,7 @@ export class EngagementController {
   }
 
   async getEngagementsByClientId(clientId) {
-    const response = await this.request.get(`${BASE_URL}/api/engagements?clientIds=${clientId}`, {
+    const response = await this.request.get(`/api/engagements?clientIds=${clientId}`, {
       headers: this.headers
     });
 
@@ -23,7 +21,7 @@ export class EngagementController {
   }
 
   async getEngagementById(engagementId) {
-    const response = await this.request.get(`${BASE_URL}/api/engagements/${engagementId}`, {
+    const response = await this.request.get(`/api/engagements/${engagementId}`, {
       headers: this.headers
     });
 
@@ -35,7 +33,7 @@ export class EngagementController {
   }
 
   async updateEngagement(engagementId, updateData) {
-    const response = await this.request.patch(`${BASE_URL}/api/engagements/${engagementId}`, {
+    const response = await this.request.patch(`/api/engagements/${engagementId}`, {
       headers: this.headers,
       data: updateData
     });
@@ -55,7 +53,7 @@ export class EngagementController {
     });
 
     const response = await this.request.get(
-      `${BASE_URL}/api/engagements/${engagementId}/logs?${params.toString()}`, {
+      `/api/engagements/${engagementId}/logs?${params.toString()}`, {
         headers: this.headers
       }
     );
@@ -68,7 +66,7 @@ export class EngagementController {
   }
 
   async getTeamMembers(engagementId) {
-    const response = await this.request.get(`${BASE_URL}/api/engagements/${engagementId}/team-members`, {
+    const response = await this.request.get(`/api/engagements/${engagementId}/team-members`, {
       headers: this.headers
     });
 
@@ -77,5 +75,13 @@ export class EngagementController {
     }
 
     return await response.json();
+  }
+
+  async deleteEngagement(engagementId) {
+    const response = await this.request.delete(`/api/engagements/${engagementId}`, {
+      headers: this.headers
+    });
+
+    return response;
   }
 }

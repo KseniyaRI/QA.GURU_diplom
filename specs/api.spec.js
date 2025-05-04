@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { BASE_URL, USERNAME, PASSWORD, CLIENT_CODE } from '../sources/consts/index.js';
+import { USERNAME, PASSWORD, CLIENT_CODE } from '../sources/consts/index.js';
 import { EngagementBuilder } from '../sources/builders/engagement.builder.js';
 import { AuthController, ClientController, EngagementController } from '../sources/controllers/index.js';
 
@@ -41,13 +41,9 @@ test.describe('API проверки', () => {
       // Используем данные из предыдущего теста
       firstEngId = engBody.data.items[0].id;
         
-      // Пытаемся удалить проект напрямую, так как в контроллерах нет метода удаления
-      const deleteResponse = await request.delete(`${BASE_URL}/api/engagements/${firstEngId}`, {
-        headers: {
-          "Authorization": `Bearer ${authToken}`,
-          "Accept": "application/json"
-        }
-      });
+      // Пытаемся удалить проект через контроллер
+      const engagementController = new EngagementController(request, authToken);
+      const deleteResponse = await engagementController.deleteEngagement(firstEngId);
       expect(deleteResponse.status()).toBe(403);
   
       // Проверяем, что UUID удаляемой сущности есть в списке всех UUIDs

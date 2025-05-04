@@ -1,4 +1,4 @@
-import { KEYCLOAK_URL } from '../consts/constURL.js';
+import { KEYCLOAK_URL } from '../../playwright.config.js';
 
 export class AuthController {
   constructor(request) {
@@ -12,7 +12,7 @@ export class AuthController {
       grant_type: "password",
       username: username
     };
-
+    
     const response = await this.request.post(KEYCLOAK_URL, {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"

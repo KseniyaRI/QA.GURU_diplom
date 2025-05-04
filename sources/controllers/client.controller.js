@@ -1,5 +1,3 @@
-import { BASE_URL } from '../consts/constURL.js';
-
 export class ClientController {
   constructor(request, authToken) {
     this.request = request;
@@ -11,7 +9,7 @@ export class ClientController {
   }
 
   async getClientByCode(clientCode) {
-    const response = await this.request.get(`${BASE_URL}/api/dictionaries/clients?search=${clientCode}`, {
+    const response = await this.request.get(`/api/dictionaries/clients?search=${clientCode}`, {
       headers: this.headers
     });
 

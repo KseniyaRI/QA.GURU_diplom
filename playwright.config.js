@@ -14,6 +14,7 @@ export default defineConfig({
   outputDir: 'test-results',
   
   use: {
+    baseURL: BASE_URL,
     // trace: 'on-first-retry',  сохранять трассировку при падении
     trace: 'retain-on-failure', // записывать трассировку всегда, но сохранять только если тест не прошел
     
