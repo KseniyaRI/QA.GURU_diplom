@@ -1,4 +1,4 @@
-/*import { BASE_URL } from '../../playwright.config.js';
+import { BASE_URL } from '../consts/constURL.js';
 
 export class EngagementController {
   constructor(request, authToken) {
@@ -9,11 +9,6 @@ export class EngagementController {
       "Accept": "application/json"
     };
   }
-
-  /**
-   * Получение списка Engagements с фильтрацией по клиенту
-   * @param {string} clientId - ID клиента для фильтрации
-   * @returns {Promise<Object>} - список Engagements
 
   async getEngagementsByClientId(clientId) {
     const response = await this.request.get(`${BASE_URL}/api/engagements?clientIds=${clientId}`, {
@@ -27,11 +22,6 @@ export class EngagementController {
     return await response.json();
   }
 
-  /**
-   * Получение данных одного Engagement по ID
-   * @param {string} engagementId - ID Engagement
-   * @returns {Promise<Object>} - данные Engagement
-   
   async getEngagementById(engagementId) {
     const response = await this.request.get(`${BASE_URL}/api/engagements/${engagementId}`, {
       headers: this.headers
@@ -43,12 +33,6 @@ export class EngagementController {
 
     return await response.json();
   }
-
-  /**
-   * Обновление данных Engagement
-   * @param {string} engagementId - ID Engagement
-   * @param {Object} updateData - данные для обновления
-   * @returns {Promise<Object>} - обновленные данные
 
   async updateEngagement(engagementId, updateData) {
     const response = await this.request.patch(`${BASE_URL}/api/engagements/${engagementId}`, {
@@ -63,11 +47,6 @@ export class EngagementController {
     return await response.json();
   }
 
-  /**
-   * Получение истории действий с Engagement
-   * @param {string} engagementId - ID Engagement
-   * @returns {Promise<Object>} - история логов
-   
   async getEngagementLogs(engagementId) {
     const params = new URLSearchParams({
       'logGroups[]': 'ENGAGEMENT',
@@ -88,11 +67,6 @@ export class EngagementController {
     return await response.json();
   }
 
-  /**
-   * Получение списка участников команды Engagement
-   * @param {string} engagementId - ID Engagement
-   * @returns {Promise<Object>} - список участников
-
   async getTeamMembers(engagementId) {
     const response = await this.request.get(`${BASE_URL}/api/engagements/${engagementId}/team-members`, {
       headers: this.headers
@@ -104,4 +78,4 @@ export class EngagementController {
 
     return await response.json();
   }
-} */
+}

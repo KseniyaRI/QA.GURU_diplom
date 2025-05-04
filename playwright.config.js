@@ -27,6 +27,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',   // сохранять скриншот при падении    
   },
 
+  // todo – реализовать создание Engagement через API, чтобы не было зависимостей между тестами
   projects: [
     {
       name: 'pages-tests',
@@ -37,7 +38,7 @@ export default defineConfig({
       name: 'api-tests',
       testMatch: /api\.spec\.js/,
       use: { ...devices['Desktop Chrome'] },
-      dependencies: ['pages-tests'], // Этот проект будет запускаться только после завершения pages-tests
+      dependencies: ['pages-tests'], // тесты api только после завершения pages-tests
     },
   ],
 });

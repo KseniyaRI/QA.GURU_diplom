@@ -1,4 +1,4 @@
-/*import { BASE_URL } from '../../playwright.config.js';
+import { BASE_URL } from '../consts/constURL.js';
 
 export class ClientController {
   constructor(request, authToken) {
@@ -9,10 +9,6 @@ export class ClientController {
       "Accept": "application/json"
     };
   }
-
-   * Поиск клиента по коду
-   * @param {string} clientCode - код клиента
-   * @returns {Promise<Object>} - данные клиента
 
   async getClientByCode(clientCode) {
     const response = await this.request.get(`${BASE_URL}/api/dictionaries/clients?search=${clientCode}`, {
@@ -31,4 +27,4 @@ export class ClientController {
     
     return body.data.items[0];
   }
-} */
+}

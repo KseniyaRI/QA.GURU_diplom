@@ -1,15 +1,9 @@
-/*import { KEYCLOAK_URL } from '../consts/constURL.js';
+import { KEYCLOAK_URL } from '../consts/constURL.js';
 
 export class AuthController {
   constructor(request) {
     this.request = request;
   }
-
-  /**
-   * Авторизация и получение токена
-   * @param {string} username - имя пользователя
-   * @param {string} password - пароль пользователя
-   * @returns {Promise<string>} - токен авторизации
 
   async getAuthToken(username, password) {
     const AUTH_DATA = {
@@ -33,4 +27,4 @@ export class AuthController {
     const body = await response.json();
     return body.access_token;
   }
-} */
+}
