@@ -29,9 +29,15 @@ export default defineConfig({
 
   projects: [
     {
-      // для рабочего проекта Chrome – целевой браузер, другие не рассматриваются
-      name: 'chromium',
+      name: 'pages-tests',
+      testMatch: /pages\.spec\.js/,
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'api-tests',
+      testMatch: /api\.spec\.js/,
+      use: { ...devices['Desktop Chrome'] },
+      dependencies: ['pages-tests'], // Этот проект будет запускаться только после завершения pages-tests
     },
   ],
 });

@@ -8,7 +8,7 @@
     "test": " npx playwright test",
     "ui": "npx playwright test --ui",
     "codegen": "npx playwright codegen https://aurora-dev.dev.tedo.ru",
-    "app": "npx playwright test .runner/test-result.js --headed"
+    "app": "npx playwright test .runner/test-result.js --headed"  
   },
   "repository": {
     "type": "git",
