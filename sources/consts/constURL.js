@@ -1,1 +1,2 @@
-export { BASE_URL, KEYCLOAK_URL } from '../../../playwright.config.js';
+export const BASE_URL = process.env.BASE_URL;
+export const KEYCLOAK_URL = process.env.KEYCLOAK_URL;
