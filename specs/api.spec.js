@@ -15,20 +15,16 @@ test.describe('API проверки', () => {
     let allEngIds;
     let firstEngId;
     let updatedEngBody;
-    let authController;
-    let clientController;
-    let engagementController;
 
     test.beforeAll('Авторизация и получение токена', async ({ request }) => {
-      authController = new AuthController(request);
+      const authController = new AuthController(request);
       authToken = await authController.getAuthToken(USERNAME, PASSWORD);
-      
-      // Инициализируем остальные контроллеры после получения токена
-      clientController = new ClientController(request, authToken);
-      engagementController = new EngagementController(request, authToken);
     });
 
     test('Проверка фильтрации проектов по клиентскому коду', async ({ request }) => {
+      const clientController = new ClientController(request, authToken);
+      const engagementController = new EngagementController(request, authToken);
+      
       // шаг 1. Получаем клиента по коду
       const client = await clientController.getClientByCode(CLIENT_CODE);
       const selectedClientId = client.id;
@@ -60,6 +56,8 @@ test.describe('API проверки', () => {
     });
   
     test('Изменение атрибутов Engagement', async ({ request }) => {
+      const engagementController = new EngagementController(request, authToken);
+      
       // Обновляем проект через контроллер
       await engagementController.updateEngagement(firstEngId, engagement);
   
@@ -72,6 +70,8 @@ test.describe('API проверки', () => {
     });
   
     test('Получение истории действий (логи) c Engagement', async ({ request }) => {
+      const engagementController = new EngagementController(request, authToken);
+      
       // Получаем логи через контроллер
       const logsEng = await engagementController.getEngagementLogs(firstEngId);
   
@@ -86,6 +86,8 @@ test.describe('API проверки', () => {
     });
   
     test('Проверяем, что в команде Engagement единственный участник == current user', async ({ request }) => {
+      const engagementController = new EngagementController(request, authToken);
+      
       // Получаем участников команды через контроллер
       const teamMembers = await engagementController.getTeamMembers(firstEngId);
       
