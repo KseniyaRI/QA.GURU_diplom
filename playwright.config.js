@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
+export const BASE_URL = process.env.BASE_URL;
+export const KEYCLOAK_URL = process.env.KEYCLOAK_URL;
+
 export default defineConfig({
   testDir: './specs',
   timeout: 60000,
