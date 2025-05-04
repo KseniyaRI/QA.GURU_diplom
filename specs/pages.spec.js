@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { USERNAME, PASSWORD, CLIENT_CODE } from '../sources/consts/index.js';
+import { BASE_URL } from '../playwright.config.js';
 import { App } from '../sources/pages/appPage.js';
 import { EngagementBuilder } from '../sources/builders/engagement.builder.js';
 
